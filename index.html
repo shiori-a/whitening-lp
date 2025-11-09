@@ -306,15 +306,20 @@
 
     <h3 class="reserve-form-title"><span class="highlight">患者様情報</span>を入力してください。</h3>
 
-<form class="reserve-form">
+<form 
+   class="reserve-form"
+   action="https://formspree.io/f/mwpaenpw"
+   method="POST"
+   >
+
   <div class="form-row">
     <label for="name">お名前</label>
-    <input type="text" id="name" name="name">
+    <input type="text" id="name" name="name" required>
   </div>
 
   <div class="form-row">
     <label for="email">E-Mail</label>
-    <input type="email" id="email" name="email">
+    <input type="email" id="email" name="email" required>
   </div>
 
   <div class="form-row">
@@ -337,8 +342,14 @@
     <textarea id="message" name="message"></textarea>
   </div>
 
-  <button type="submit" class="btn-reserve">▶︎　　オンライン予約をする</button>
+  <!--送信後にthanksページへ遷移-->
+  <input type="hidden" name="_next" value="https://shiori-a.github.io/whitening-lp/thanks.html">
+
+  <button type="submit" class="btn-reserve">▶   オンライン予約をする</button>
+
 </form>
+    <p id="form-message" style="text-align: center; margin-top: 1rem; color: #4b3db5;"></p>
+
 
   </div>
 </section>
@@ -384,5 +395,42 @@
 <footer class="site-footer">
   <p class="footer-text">Copyright © 2024 gotanda dental clinic. All Rights Reserved.</p>
 </footer>
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const form = document.querySelector(".reserve-form");
+  const messageEl = document.getElementById("form-message");
+
+  form.addEventListener("submit", async function(event) {
+    event.preventDefault(); // ページ遷移を止める
+
+    messageEl.textContent = "送信中です…";
+    messageEl.style.color = "#666";
+
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+      });
+
+      if (response.ok) {
+        messageEl.textContent = "送信が完了しました。ご予約ありがとうございます！";
+        messageEl.style.color = "#4b3db5";
+        form.reset(); // 入力内容をクリア
+      } else {
+        messageEl.textContent = "送信に失敗しました。もう一度お試しください。";
+        messageEl.style.color = "red";
+      }
+    } catch (error) {
+      messageEl.textContent = "通信エラーが発生しました。";
+      messageEl.style.color = "red";
+    }
+  });
+});
+</script>
+
 </body>
 
