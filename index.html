@@ -414,7 +414,7 @@ document.addEventListener("DOMContentLoaded", function() {
     messageEl.textContent = "送信中です…";
     messageEl.style.color = "#666";
     messageEl.classList.add("show");
-    console.log("フォーム送信イベントが発火しました");
+    
     try {
       const response = await fetch(form.action, {
         method: "POST",
