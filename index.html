@@ -306,11 +306,9 @@
 
     <h3 class="reserve-form-title"><span class="highlight">患者様情報</span>を入力してください。</h3>
 
-<form 
-   class="reserve-form"
-   action="https://formspree.io/f/mwpaenpw"
-   method="POST"
-   >
+<form class="reserve-form"
+      action="https://formspree.io/f/mwpaenpw"
+      method="POST">
 
   <div class="form-row">
     <label for="name">お名前</label>
@@ -406,8 +404,16 @@ document.addEventListener("DOMContentLoaded", function() {
   form.addEventListener("submit", async function(event) {
     event.preventDefault(); // ページ遷移を止める
 
+    if(!from.checkValidity()){
+      messageEl.textContent = "未入力の項目があります。ご確認ください。";
+      messageEl.style.color = "red";
+      messageEl.classList.add("show");
+      return;
+    }
+
     messageEl.textContent = "送信中です…";
     messageEl.style.color = "#666";
+    messageEl.classList.add("show");
 
     try {
       const response = await fetch(form.action, {
@@ -420,6 +426,10 @@ document.addEventListener("DOMContentLoaded", function() {
         messageEl.textContent = "送信が完了しました。ご予約ありがとうございます！";
         messageEl.style.color = "#4b3db5";
         form.reset(); // 入力内容をクリア
+
+        // 数秒後にメッセージをフェードアウト
+        setTimeout(() => messageEl.classList.remove("show"), 4000);
+
       } else {
         messageEl.textContent = "送信に失敗しました。もう一度お試しください。";
         messageEl.style.color = "red";

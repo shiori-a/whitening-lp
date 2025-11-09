@@ -585,6 +585,8 @@ img {
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
+  position:relative;
+  z-index: 10;
 }
 
 .form-row {
