@@ -408,7 +408,22 @@ document.addEventListener("DOMContentLoaded", function() {
     event.preventDefault(); // ページ遷移を止める
 
     if(!form.checkValidity()){
+      const email = form.querySelector("#email");
+    const tel = form.querySelector("#tel");
+
+    // メールアドレスの形式エラー
+    if (email.validity.typeMismatch) {
+      messageEl.textContent = "メールアドレスの形式が正しくありません。";
+    }
+    // 電話番号の形式エラー
+    else if (tel.validity.patternMismatch) {
+      messageEl.textContent = "電話番号の形式が正しくありません（例：090-1234-5678）。";
+    }
+    // 未入力などその他
+    else {
       messageEl.textContent = "未入力の項目があります。ご確認ください。";
+    }
+
       messageEl.style.color = "red";
       messageEl.classList.add("show");
       return;
