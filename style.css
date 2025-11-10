@@ -604,7 +604,7 @@ img {
 }
 
 .form-row select {
-  flex: 1; /* ← input と同じ幅制御にする */
+  flex: 1; 
   padding: 1rem;
   font-size: 1.6rem;
   border: 1px solid #000;
