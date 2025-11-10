@@ -428,44 +428,52 @@
 document.addEventListener("DOMContentLoaded", function() {
   const form = document.querySelector(".reserve-form");
   const messageEl = document.getElementById("form-message");
+  const name = document.querySelector("#name");
+  const email = document.querySelector("#email");
+  const tel = document.querySelector("#tel");
+  const date = document.querySelector("#date");
+  const time = document.querySelector("#time");
 
+  // 📌 フォーム送信イベント
   form.addEventListener("submit", async function(event) {
-    event.preventDefault(); // ページ遷移を止める
+    event.preventDefault(); // ページ遷移を防止
+    [name, email, tel, date, time].forEach(field => field.setCustomValidity(""));
 
-    if(!form.checkValidity()){
-      const email = form.querySelector("#email");
-      const tel = form.querySelector("#tel");
-
-    // メールアドレスの形式エラー
-    if (email.validity.typeMismatch) {
-      messageEl.textContent = "メールアドレスの形式が正しくありません。";
+    // --- バリデーション（日本語メッセージ） ---
+    if (name.value.trim() === "") {
+      name.setCustomValidity("お名前を入力してください。");
     }
-    // 電話番号の形式エラー
-    else if (tel.validity.patternMismatch) {
-      messageEl.textContent = "電話番号の形式が正しくありません（例：090-1234-5678）。";
-    }
-    // 未入力などその他
-    else {
-      messageEl.textContent = "未入力の項目があります。ご確認ください。";
+    if (email.value.trim() === "") {
+      email.setCustomValidity("メールアドレスを入力してください。");
+    } else if (email.validity.typeMismatch) {
+      email.setCustomValidity("メールアドレスの形式が正しくありません。");
     }
 
-      messageEl.style.color = "red";
-      messageEl.classList.add("show");
+    const telPattern = /^0\d{1,4}-?\d{1,4}-?\d{3,4}$/;
+    if (tel.value.trim() === "") {
+      tel.setCustomValidity("電話番号を入力してください。");
+    } else if (!telPattern.test(tel.value)) {
+      tel.setCustomValidity("電話番号はハイフンあり・なしどちらでも入力できます（例：090-1234-5678）。");
+    }
+
+    if (date.value.trim() === "") {
+      date.setCustomValidity("ご予約日を選択してください。");
+    }
+    if (time.value.trim() === "") {
+      time.setCustomValidity("ご希望の時間を選択してください。");
+    }
+
+    // --- バリデーション実行 ---
+    if (!form.checkValidity()) {
+      form.reportValidity();
       return;
     }
 
-    const tel = form.querySelector("#tel");
-  if (tel.validity.patternMismatch) {
-    messageEl.textContent = "電話番号は数字のみで入力してください（例：090-1234-5678）";
-    messageEl.style.color = "red";
-    messageEl.classList.add("show");
-    return;
-  }
-
+    // --- 送信処理（Formspree） ---
     messageEl.textContent = "送信中です…";
     messageEl.style.color = "#666";
     messageEl.classList.add("show");
-    
+
     try {
       const response = await fetch(form.action, {
         method: "POST",
@@ -476,11 +484,8 @@ document.addEventListener("DOMContentLoaded", function() {
       if (response.ok) {
         messageEl.textContent = "送信が完了しました。ご予約ありがとうございます！";
         messageEl.style.color = "#4b3db5";
-        form.reset(); // 入力内容をクリア
-
-        // 数秒後にメッセージをフェードアウト
+        form.reset();
         setTimeout(() => messageEl.classList.remove("show"), 4000);
-
       } else {
         messageEl.textContent = "送信に失敗しました。もう一度お試しください。";
         messageEl.style.color = "red";
@@ -489,6 +494,11 @@ document.addEventListener("DOMContentLoaded", function() {
       messageEl.textContent = "通信エラーが発生しました。";
       messageEl.style.color = "red";
     }
+  });
+
+  // 入力中にエラー解除
+  [name, email, tel, date, time].forEach(field => {
+    field.addEventListener("input", () => field.setCustomValidity(""));
   });
 });
 </script>
