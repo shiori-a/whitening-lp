@@ -322,17 +322,20 @@
 
   <div class="form-row">
     <label for="tel">TEL</label>
-    <input type="tel" id="tel" name="tel">
+    <input type="tel" id="tel" name="tel"
+           pattern="^0\d{1,4}-?\d{1,4}-?\{3,4}$"
+           title="電話番号はハイフンあり・なしどちらでも入力できます(例：090-1234-5678)"
+           required>
   </div>
 
   <div class="form-row">
     <label for="date">ご予約日</label>
-    <input type="date" id="date" name="date">
+    <input type="date" id="date" name="date" required>
   </div>
 
   <div class="form-row">
     <label for="time">お時間</label>
-    <input type="time" id="time" name="time">
+    <input type="time" id="time" name="time" step="1800" required>
   </div>
 
   <div class="form-row textarea-row">
