@@ -603,6 +603,16 @@ img {
   padding-top: 0.4rem;
 }
 
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+
 .form-row input,
 .form-row textarea {
   flex: 1;
