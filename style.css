@@ -603,13 +603,14 @@ img {
   padding-top: 0.4rem;
 }
 
-select {
-  width: 100%;
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.form-row select {
+  flex: 1; /* ← input と同じ幅制御にする */
+  padding: 1rem;
+  font-size: 1.6rem;
+  border: 1px solid #000;
+  border-radius: 0.5rem;
   background-color: #fff;
+  box-sizing: border-box;
 }
 
 
