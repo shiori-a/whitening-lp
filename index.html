@@ -324,6 +324,7 @@
     <label for="tel">TEL</label>
     <input type="tel" id="tel" name="tel"
            pattern="^0\d{1,4}-?\d{1,4}-?\{3,4}$"
+           inputmode="numeric"
            title="電話番号はハイフンあり・なしどちらでも入力できます(例：090-1234-5678)"
            required>
   </div>
@@ -409,7 +410,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if(!form.checkValidity()){
       const email = form.querySelector("#email");
-    const tel = form.querySelector("#tel");
+      const tel = form.querySelector("#tel");
 
     // メールアドレスの形式エラー
     if (email.validity.typeMismatch) {
@@ -428,6 +429,14 @@ document.addEventListener("DOMContentLoaded", function() {
       messageEl.classList.add("show");
       return;
     }
+
+    const tel = form.querySelector("#tel");
+  if (tel.validity.patternMismatch) {
+    messageEl.textContent = "電話番号は数字のみで入力してください（例：090-1234-5678）";
+    messageEl.style.color = "red";
+    messageEl.classList.add("show");
+    return;
+  }
 
     messageEl.textContent = "送信中です…";
     messageEl.style.color = "#666";
